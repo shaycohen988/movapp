@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import axios from "axios";
 import SearchMovie from "./SearchMovie";
@@ -8,29 +8,42 @@ const API_KEY = "87f19960";
 
 function App() {
   const [movies, setmovies] = useState("");
-  const [movieData, setmovieData] = useState("");
+  const [movieData, setmovieData] = useState(null);
+
+  const isInitMount = useRef(true);
 
   useEffect(() => {
-    document.title = movies;
-    async function fatchData() {
-      try {
-        const data = await axios.get(
-          `http://www.omdbapi.com/?i=tt3896198&apikey=${API_KEY}`
-        );
-        console.log(data);
-
-        setmovieData(data.data);
-      } catch {
-        console.log("err");
+    if (isInitMount.current) {
+      isInitMount.current = false;
+    } else {
+      document.title = movies;
+      async function fatchData() {
+        try {
+          const data = await axios.get(
+            `http://www.omdbapi.com/?s=${movies}&apikey=${API_KEY}`
+          );
+          console.log(data);
+          if (data.data.Response === "False") {
+            console.log("res false");
+          } else {
+            setmovieData(data.data);
+          }
+        } catch {
+          console.log("err");
+        }
       }
+      fatchData();
     }
-    fatchData();
   }, [movies]);
 
   return (
     <>
       <SearchMovie newMovie={setmovies} />
-      <DisplayMovies />
+      {movieData == null ? (
+        "search for a movie"
+      ) : (
+        <DisplayMovies movies={movieData} />
+      )}
     </>
   );
   /* 
