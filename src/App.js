@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./App.css";
 import axios from "axios";
 import SearchMovie from "./SearchMovie";
 import DisplayMovies from "./DisplayMovies";
+
+import Container from "react-bootstrap/Container";
+import Navbar from "react-bootstrap/Navbar";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const API_KEY = "87f19960";
 
@@ -38,12 +42,22 @@ function App() {
 
   return (
     <>
-      <SearchMovie newMovie={setmovies} />
-      {movieData == null ? (
-        "search for a movie"
-      ) : (
-        <DisplayMovies movies={movieData} />
-      )}
+      <Container>
+        <Navbar expand="lg" variant="light" bg="light">
+          <Navbar.Brand href="#">MovieDip</Navbar.Brand>
+
+          <SearchMovie newMovie={setmovies} />
+        </Navbar>
+        <Row>
+          <Col>
+            {movieData == null ? (
+              "error display or null - tb"
+            ) : (
+              <DisplayMovies movies={movieData} />
+            )}
+          </Col>
+        </Row>
+      </Container>
     </>
   );
   /* 

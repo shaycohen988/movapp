@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import Form from "react-bootstrap/Form";
+
 export default function SearchMovie({ newMovie }) {
   const [searchInput, setSearchInput] = useState("");
   const handleChange = (val) => {
@@ -7,8 +9,8 @@ export default function SearchMovie({ newMovie }) {
     console.log("value", val);
   };
   return (
-    <div>
-      <form
+    <>
+      {/*      <form
         onSubmit={(e) => {
           e.preventDefault();
           newMovie(searchInput);
@@ -20,7 +22,21 @@ export default function SearchMovie({ newMovie }) {
           value={searchInput}
           onChange={(e) => handleChange(e.target.value)}
         />
-      </form>
-    </div>
+      </form> */}
+      <Form
+        className=" ml-auto"
+        onSubmit={(e) => {
+          e.preventDefault();
+          newMovie(searchInput);
+        }}
+      >
+        <Form.Control
+          type="text"
+          placeholder="Moive title"
+          value={searchInput}
+          onChange={(e) => handleChange(e.target.value)}
+        />
+      </Form>
+    </>
   );
 }
